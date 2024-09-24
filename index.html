@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>精美图片轮播</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        /* 修改现有的 body 样式 */
+        body {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            min-height: 100vh;
+            overflow-y: auto;
+        }
+
+        /* 添加一个新的容器来包裹所有内容 */
+        .content-wrapper {
+            padding-top: 20px; /* 减少顶部填充 */
+        }
+
+        /* 修改导航按钮容器样式 */
+        .nav-container {
+            position: static; /* 改为静态定位 */
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 10px 0;
+            text-align: center; /* 居中按钮 */
+            margin-bottom: 20px; /* 添加底部边距 */
+        }
+
+        /* 修改 .nav-btn 样式 */
+        .nav-btn {
+            background-color: rgba(255, 255, 255, 0.7);
+            border: 1px solid rgba(221, 221, 221, 0.7);
+            padding: 8px 16px;
+            margin: 0 5px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background-color 0.3s, color 0.3s;
+            color: #333;
+            border-radius: 20px; /* 添加圆角效果 */
+            text-decoration: none; /* 添加这行 */
+            display: inline-block; /* 添加这行 */
+        }
+        .nav-btn:hover {
+            background-color: rgba(0, 123, 255, 0.7);
+            color: white;
+        }
+
+        /* 修改 .carousel-container 样式 */
+        .carousel-container {
+            margin-bottom: 100px; /* 减少底部间距 */
+            height: 400px; /* 调整高度 */
+            position: relative;
+            overflow: hidden;
+            padding: 0;
+            border: none;
+            border-radius: 15px; /* 添加圆角效果 */
+        }
+
+        /* 修改 .carousel 样式 */
+        .carousel {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border-radius: 15px; /* 添加圆角效果 */
+            overflow: hidden; /* 确保内容不会超出圆角 */
+        }
+
+        /* 修改 .carousel img 样式 */
+        .carousel img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+        }
+
+        .carousel img.active {
+            opacity: 1;
+        }
+
+        /* 修改 .arrow 样式 */
+        .arrow {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background-color: transparent;
+            color: rgba(255, 255, 255, 0.7);
+            border: none;
+            padding: 5px 8px;
+            cursor: pointer;
+            font-size: 24px;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+            z-index: 10;
+            transition: color 0.3s ease;
+        }
+
+        .arrow:hover {
+            color: rgba(255, 255, 255, 1);
+        }
+
+        .left-arrow {
+            left: 10px;
+        }
+
+        .right-arrow {
+            right: 10px;
+        }
+
+        .dots {
+            text-align: center;
+            margin-top: 10px;
+        }
+        .dot {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            background-color: #bbb;
+            border-radius: 50%;
+            margin: 0 5px;
+            cursor: pointer;
+        }
+        .dot.active {
+            background-color: #717171;
+        }
+        .progress-bar {
+            width: 100%;
+            height: 5px;
+            background-color: #ddd;
+        }
+        .progress {
+            width: 0;
+            height: 100%;
+            background-color: #888;
+            transition: width 0.5s ease-in-out;
+        }
+
+        /* 回到顶部按钮样式 */
+        #backToTop {
+            display: block;
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            z-index: 1000;
+            background-color: white;
+            color: #333;
+            text-decoration: none;
+            cursor: pointer;
+            padding: 15px;
+            border-radius: 50%;
+            font-size: 18px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        #backToTop:hover {
+            background-color: #333;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="nav-container">
+        <a href="#yuzu" class="nav-btn">玉足</a>
+        <a href="#dalei" class="nav-btn">大雷</a>
+        <a href="#weimei" class="nav-btn">唯美</a>
+        <a href="#fengjing" class="nav-btn">风景</a>
+        <a href="#shuaiqi" class="nav-btn">帅气</a>
+    </div>
+
+    <div class="content-wrapper">
+        <!-- 轮播 1 (玉足) -->
+        <div id="yuzu" class="carousel-container">
+            <div class="carousel">
+                <img src="yuzu1.jpg" alt="玉足图片1" class="active">
+                <img src="yuzu2.jpg" alt="玉足图片2">
+                <img src="yuzu3.jpg" alt="玉足图片3">
+                <img src="yuzu4.jpg" alt="玉足图片4">
+            </div>
+            <button class="arrow left-arrow">&lt;</button>
+            <button class="arrow right-arrow">&gt;</button>
+            <div class="dots"></div>
+            <div class="progress-bar">
+                <div class="progress"></div>
+            </div>
+        </div>
+
+        <!-- 轮播 2 (大雷) -->
+        <div id="dalei" class="carousel-container">
+            <div class="carousel">
+                <img src="dalei1.jpg" alt="大雷图片1" class="active">
+                <img src="dalei2.jpg" alt="大雷图片2">
+                <img src="dalei3.jpg" alt="大雷图片3">
+                <img src="dalei4.jpg" alt="大雷图片4">
+            </div>
+            <button class="arrow left-arrow">&lt;</button>
+            <button class="arrow right-arrow">&gt;</button>
+            <div class="dots"></div>
+            <div class="progress-bar">
+                <div class="progress"></div>
+            </div>
+        </div>
+
+        <!-- 轮播 3 (唯美) -->
+        <div id="weimei" class="carousel-container">
+            <div class="carousel">
+                <img src="weimei1.jpg" alt="唯美图片1" class="active">
+                <img src="weimei2.jpg" alt="唯美图片2">
+                <img src="weimei3.jpg" alt="唯美图片3">
+                <img src="weimei4.jpg" alt="唯美图片4">
+            </div>
+            <button class="arrow left-arrow">&lt;</button>
+            <button class="arrow right-arrow">&gt;</button>
+            <div class="dots"></div>
+            <div class="progress-bar">
+                <div class="progress"></div>
+            </div>
+        </div>
+
+        <!-- 轮播 4 (风景) -->
+        <div id="fengjing" class="carousel-container">
+            <div class="carousel">
+                <img src="fengjing1.jpg" alt="风景图片1" class="active">
+                <img src="fengjing2.jpg" alt="风景图片2">
+                <img src="fengjing3.jpg" alt="风景图片3">
+                <img src="fengjing4.jpg" alt="风景图片4">
+            </div>
+            <button class="arrow left-arrow">&lt;</button>
+            <button class="arrow right-arrow">&gt;</button>
+            <div class="dots"></div>
+            <div class="progress-bar">
+                <div class="progress"></div>
+            </div>
+        </div>
+
+        <!-- 轮播 5 (帅气) -->
+        <div id="shuaiqi" class="carousel-container">
+            <div class="carousel">
+                <img src="shuaiqi1.jpg" alt="帅气图片1" class="active">
+                <img src="shuaiqi2.jpg" alt="帅气图片2">
+                <img src="shuaiqi3.jpg" alt="帅气图片3">
+                <img src="shuaiqi4.jpg" alt="帅气图片4">
+            </div>
+            <button class="arrow left-arrow">&lt;</button>
+            <button class="arrow right-arrow">&gt;</button>
+            <div class="dots"></div>
+            <div class="progress-bar">
+                <div class="progress"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 添加回到顶部按钮 -->
+    <a href="#yuzu" id="backToTop" title="回到顶部">↑</a>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // 导航功能
+        const navLinks = document.querySelectorAll('.nav-btn, #backToTop');
+
+        navLinks.forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href').substring(1);
+                const targetElement = document.getElementById(targetId);
+
+                if (targetElement) {
+                    targetElement.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // 轮播功能
+        const carousels = document.querySelectorAll('.carousel-container');
+        carousels.forEach(carousel => {
+            const images = carousel.querySelectorAll('.carousel img');
+            const dots = carousel.querySelector('.dots');
+            const leftArrow = carousel.querySelector('.left-arrow');
+            const rightArrow = carousel.querySelector('.right-arrow');
+            const progressBar = carousel.querySelector('.progress');
+            let currentIndex = 0;
+            let intervalId;
+
+            // 创建点
+            images.forEach((_, index) => {
+                const dot = document.createElement('span');
+                dot.classList.add('dot');
+                if (index === 0) dot.classList.add('active');
+                dot.addEventListener('click', () => showImage(index));
+                dots.appendChild(dot);
+            });
+
+            // 显示图片
+            function showImage(index) {
+                images[currentIndex].classList.remove('active');
+                dots.children[currentIndex].classList.remove('active');
+                currentIndex = index;
+                images[currentIndex].classList.add('active');
+                dots.children[currentIndex].classList.add('active');
+                updateProgressBar();
+            }
+
+            // 更新进度条
+            function updateProgressBar() {
+                const progress = ((currentIndex + 1) / images.length) * 100;
+                progressBar.style.width = `${progress}%`;
+            }
+
+            // 自动播放
+            function startAutoPlay() {
+                intervalId = setInterval(() => {
+                    showImage((currentIndex + 1) % images.length);
+                }, 5000);
+            }
+
+            function stopAutoPlay() {
+                clearInterval(intervalId);
+            }
+
+            // 箭头点击事件
+            leftArrow.addEventListener('click', () => {
+                showImage((currentIndex - 1 + images.length) % images.length);
+                stopAutoPlay();
+                startAutoPlay();
+            });
+
+            rightArrow.addEventListener('click', () => {
+                showImage((currentIndex + 1) % images.length);
+                stopAutoPlay();
+                startAutoPlay();
+            });
+
+            // 开始自动播放
+            startAutoPlay();
+
+            // 鼠标悬停时停止自动播放
+            carousel.addEventListener('mouseenter', stopAutoPlay);
+            carousel.addEventListener('mouseleave', startAutoPlay);
+        });
+    });
+    </script>
+</body>
+</html>
